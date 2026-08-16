@@ -557,22 +557,6 @@ Before running **any** attack command, verify all six items:
 
 ---
 
-## 👥 Team
-
-**Group 05 — PGCP-CSF February 2026**
-*C-DAC, Thiruvananthapuram, Kerala*
-
-| Name | PRN |
-|---|---|
-| Abhishek Bhankhede | 260260940001 |
-| Amit Singh | 260260940009 |
-| Bhavesh Dewan | 260260940012 |
-| Krishna Rajendra Wakode | 260260940026 |
-| Meenakshi Shendage | 260260940029 |
-
-**Under the guidance of:** Mr. Jayaram & Mr. Hiron Bose
-
----
 
 ## 🙏 Acknowledgements
 
@@ -586,16 +570,4 @@ Before running **any** attack command, verify all six items:
 
 ---
 
-## ⚠️ Disclaimer
 
-This project was built **entirely on isolated, offline virtual machines** owned and controlled by the project authors, as part of a structured academic cybersecurity training programme at C-DAC. All attack techniques are demonstrated for **defensive and educational purposes only**. Using these techniques against systems without explicit written authorization is illegal.
-
----
-
-<div align="center">
-
-**NexusBank SOC Blue Team Detection Lab — PGCP-CSF Feb 2026 — Group 05 — C-DAC Thiruvananthapuram**
-
-*If this project helped you, please ⭐ the repository.*
-
-</div>
