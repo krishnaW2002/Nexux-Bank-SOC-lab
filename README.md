@@ -11,7 +11,6 @@
 
 **A fully contained, evidence-backed SOC lab simulating a targeted attack against a fictional bank, from initial reconnaissance through full domain compromise — with custom detection rules, automated response playbooks, and a complete VAPT report.**
 
-*PGCP-CSF February 2026 · Group 05 · C-DAC Thiruvananthapuram, Kerala*
 
 </div>
 
