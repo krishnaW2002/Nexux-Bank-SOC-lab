@@ -1,0 +1,171 @@
+# Nmap 7.99 scan initiated Tue Aug  4 19:50:43 2026 as: /usr/lib/nmap/nmap --privileged -sC -sV -O -oN /home/kaliadmin/P1-VAPT/recon/full-scan.txt 192.168.10.10 192.168.10.30 192.168.10.50
+Nmap scan report for 192.168.10.10
+Host is up (0.00097s latency).
+Not shown: 987 filtered tcp ports (no-response)
+PORT     STATE SERVICE       VERSION
+53/tcp   open  domain        Simple DNS Plus
+88/tcp   open  kerberos-sec  Microsoft Windows Kerberos (server time: 2026-08-04 14:20:56Z)
+135/tcp  open  msrpc         Microsoft Windows RPC
+139/tcp  open  netbios-ssn   Microsoft Windows netbios-ssn
+389/tcp  open  ldap          Microsoft Windows Active Directory LDAP (Domain: NexusBank.internal, Site: Default-First-Site-Name)
+445/tcp  open  microsoft-ds?
+464/tcp  open  kpasswd5?
+593/tcp  open  ncacn_http    Microsoft Windows RPC over HTTP 1.0
+636/tcp  open  tcpwrapped
+3268/tcp open  ldap          Microsoft Windows Active Directory LDAP (Domain: NexusBank.internal, Site: Default-First-Site-Name)
+3269/tcp open  tcpwrapped
+5357/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Service Unavailable
+5985/tcp open  http          Microsoft HTTPAPI httpd 2.0 (SSDP/UPnP)
+|_http-server-header: Microsoft-HTTPAPI/2.0
+|_http-title: Not Found
+MAC Address: 00:0C:29:DA:63:F3 (VMware)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running (JUST GUESSING): Microsoft Windows 2022|11|2016 (97%)
+OS CPE: cpe:/o:microsoft:windows_server_2022 cpe:/o:microsoft:windows_11 cpe:/o:microsoft:windows_server_2016
+Aggressive OS guesses: Microsoft Windows Server 2022 (97%), Microsoft Windows 11 21H2 (91%), Microsoft Windows Server 2016 (91%), Microsoft Windows 11 24H2 (90%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 1 hop
+Service Info: Host: NXB-DC01; OS: Windows; CPE: cpe:/o:microsoft:windows
+
+Host script results:
+| smb2-time: 
+|   date: 2026-08-04T14:21:21
+|_  start_date: N/A
+|_nbstat: NetBIOS name: NXB-DC01, NetBIOS user: <unknown>, NetBIOS MAC: 00:0c:29:da:63:f3 (VMware)
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled and required
+|_clock-skew: -1s
+
+Nmap scan report for 192.168.10.30
+Host is up (0.00086s latency).
+Not shown: 999 filtered tcp ports (no-response)
+PORT    STATE SERVICE       VERSION
+445/tcp open  microsoft-ds?
+MAC Address: 00:0C:29:5A:A4:DA (VMware)
+Warning: OSScan results may be unreliable because we could not find at least 1 open and 1 closed port
+Device type: general purpose
+Running (JUST GUESSING): Microsoft Windows 10|11|2019 (97%)
+OS CPE: cpe:/o:microsoft:windows_10 cpe:/o:microsoft:windows_11 cpe:/o:microsoft:windows_server_2019
+Aggressive OS guesses: Microsoft Windows 10 1803 (97%), Microsoft Windows 10 1903 - 22H2 (97%), Microsoft Windows 10 22H2 (97%), Microsoft Windows 11 (92%), Microsoft Windows 10 1909 (91%), Microsoft Windows 10 1909 - 2004 (91%), Microsoft Windows Server 2019 (91%), Microsoft Windows 10 1809 (91%), Microsoft Windows 10 20H2 (88%)
+No exact OS matches for host (test conditions non-ideal).
+Network Distance: 1 hop
+
+Host script results:
+| smb2-time: 
+|   date: 2026-08-04T14:21:22
+|_  start_date: N/A
+|_nbstat: NetBIOS name: NXB-CL01, NetBIOS user: <unknown>, NetBIOS MAC: 00:0c:29:5a:a4:da (VMware)
+| smb2-security-mode: 
+|   3.1.1: 
+|_    Message signing enabled but not required
+
+Nmap scan report for 192.168.10.50
+Host is up (0.00068s latency).
+Not shown: 999 closed tcp ports (reset)
+PORT    STATE SERVICE   VERSION
+443/tcp open  ssl/https
+| ssl-cert: Subject: commonName=wazuh-dashboard/organizationName=Wazuh/countryName=US
+| Subject Alternative Name: IP Address:127.0.0.1
+| Not valid before: 2026-07-03T06:09:38
+|_Not valid after:  2036-06-30T06:09:38
+| tls-alpn: 
+|_  http/1.1
+|_ssl-date: TLS randomness does not represent time
+| fingerprint-strings: 
+|   FourOhFourRequest: 
+|     HTTP/1.1 401 Unauthorized
+|     osd-name: NXB-SIEM
+|     x-frame-options: sameorigin
+|     content-type: application/json; charset=utf-8
+|     cache-control: private, no-cache, no-store, must-revalidate
+|     set-cookie: security_authentication=; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; HttpOnly; Path=/
+|     content-length: 77
+|     Date: Tue, 04 Aug 2026 14:21:03 GMT
+|     Connection: close
+|     {"statusCode":401,"error":"Unauthorized","message":"Authentication required"}
+|   GetRequest: 
+|     HTTP/1.1 302 Found
+|     location: /app/login?
+|     osd-name: NXB-SIEM
+|     x-frame-options: sameorigin
+|     cache-control: private, no-cache, no-store, must-revalidate
+|     set-cookie: security_authentication=; Max-Age=0; Expires=Thu, 01 Jan 1970 00:00:00 GMT; Secure; HttpOnly; Path=/
+|     content-length: 0
+|     Date: Tue, 04 Aug 2026 14:21:03 GMT
+|     Connection: close
+|   HTTPOptions: 
+|     HTTP/1.1 404 Not Found
+|     osd-name: NXB-SIEM
+|     x-frame-options: sameorigin
+|     content-type: application/json; charset=utf-8
+|     cache-control: private, no-cache, no-store, must-revalidate
+|     content-length: 60
+|     Date: Tue, 04 Aug 2026 14:21:03 GMT
+|     Connection: close
+|     {"statusCode":404,"error":"Not Found","message":"Not Found"}
+|   RTSPRequest: 
+|     HTTP/1.1 404 Not Found
+|     osd-name: NXB-SIEM
+|     x-frame-options: sameorigin
+|     content-type: application/json; charset=utf-8
+|     cache-control: private, no-cache, no-store, must-revalidate
+|     content-length: 60
+|     Date: Tue, 04 Aug 2026 14:21:08 GMT
+|     Connection: close
+|_    {"statusCode":404,"error":"Not Found","message":"Not Found"}
+| http-title: Wazuh
+|_Requested resource was /app/login?
+1 service unrecognized despite returning data. If you know the service/version, please submit the following fingerprint at https://nmap.org/cgi-bin/submit.cgi?new-service :
+SF-Port443-TCP:V=7.99%T=SSL%I=7%D=8/4%Time=6A71F54F%P=x86_64-pc-linux-gnu%
+SF:r(GetRequest,158,"HTTP/1\.1\x20302\x20Found\r\nlocation:\x20/app/login\
+SF:?\r\nosd-name:\x20NXB-SIEM\r\nx-frame-options:\x20sameorigin\r\ncache-c
+SF:ontrol:\x20private,\x20no-cache,\x20no-store,\x20must-revalidate\r\nset
+SF:-cookie:\x20security_authentication=;\x20Max-Age=0;\x20Expires=Thu,\x20
+SF:01\x20Jan\x201970\x2000:00:00\x20GMT;\x20Secure;\x20HttpOnly;\x20Path=/
+SF:\r\ncontent-length:\x200\r\nDate:\x20Tue,\x2004\x20Aug\x202026\x2014:21
+SF::03\x20GMT\r\nConnection:\x20close\r\n\r\n")%r(HTTPOptions,13F,"HTTP/1\
+SF:.1\x20404\x20Not\x20Found\r\nosd-name:\x20NXB-SIEM\r\nx-frame-options:\
+SF:x20sameorigin\r\ncontent-type:\x20application/json;\x20charset=utf-8\r\
+SF:ncache-control:\x20private,\x20no-cache,\x20no-store,\x20must-revalidat
+SF:e\r\ncontent-length:\x2060\r\nDate:\x20Tue,\x2004\x20Aug\x202026\x2014:
+SF:21:03\x20GMT\r\nConnection:\x20close\r\n\r\n{\"statusCode\":404,\"error
+SF:\":\"Not\x20Found\",\"message\":\"Not\x20Found\"}")%r(FourOhFourRequest
+SF:,1C5,"HTTP/1\.1\x20401\x20Unauthorized\r\nosd-name:\x20NXB-SIEM\r\nx-fr
+SF:ame-options:\x20sameorigin\r\ncontent-type:\x20application/json;\x20cha
+SF:rset=utf-8\r\ncache-control:\x20private,\x20no-cache,\x20no-store,\x20m
+SF:ust-revalidate\r\nset-cookie:\x20security_authentication=;\x20Max-Age=0
+SF:;\x20Expires=Thu,\x2001\x20Jan\x201970\x2000:00:00\x20GMT;\x20Secure;\x
+SF:20HttpOnly;\x20Path=/\r\ncontent-length:\x2077\r\nDate:\x20Tue,\x2004\x
+SF:20Aug\x202026\x2014:21:03\x20GMT\r\nConnection:\x20close\r\n\r\n{\"stat
+SF:usCode\":401,\"error\":\"Unauthorized\",\"message\":\"Authentication\x2
+SF:0required\"}")%r(RTSPRequest,13F,"HTTP/1\.1\x20404\x20Not\x20Found\r\no
+SF:sd-name:\x20NXB-SIEM\r\nx-frame-options:\x20sameorigin\r\ncontent-type:
+SF:\x20application/json;\x20charset=utf-8\r\ncache-control:\x20private,\x2
+SF:0no-cache,\x20no-store,\x20must-revalidate\r\ncontent-length:\x2060\r\n
+SF:Date:\x20Tue,\x2004\x20Aug\x202026\x2014:21:08\x20GMT\r\nConnection:\x2
+SF:0close\r\n\r\n{\"statusCode\":404,\"error\":\"Not\x20Found\",\"message\
+SF:":\"Not\x20Found\"}");
+MAC Address: 00:0C:29:18:26:70 (VMware)
+No exact OS matches for host (If you know what OS is running on it, see https://nmap.org/submit/ ).
+TCP/IP fingerprint:
+OS:SCAN(V=7.99%E=4%D=8/4%OT=443%CT=1%CU=33802%PV=Y%DS=1%DC=D%G=Y%M=000C29%T
+OS:M=6A71F58B%P=x86_64-pc-linux-gnu)SEQ(SP=104%GCD=1%ISR=10F%TI=Z%CI=Z%II=I
+OS:%TS=22)SEQ(SP=105%GCD=1%ISR=10A%TI=Z%CI=Z%II=I%TS=21)SEQ(SP=106%GCD=1%IS
+OS:R=10B%TI=Z%CI=Z%II=I%TS=21)SEQ(SP=FD%GCD=1%ISR=101%TI=Z%CI=Z%II=I%TS=22)
+OS:SEQ(SP=FF%GCD=1%ISR=103%TI=Z%CI=Z%TS=22)OPS(O1=M5B4ST11NWA%O2=M5B4ST11NW
+OS:A%O3=M5B4NNT11NWA%O4=M5B4ST11NWA%O5=M5B4ST11NWA%O6=M5B4ST11)WIN(W1=FE88%
+OS:W2=FE88%W3=FE88%W4=FE88%W5=FE88%W6=FE88)ECN(R=Y%DF=Y%T=40%W=FAF0%O=M5B4N
+OS:NSNWA%CC=Y%Q=)T1(R=Y%DF=Y%T=40%S=O%A=S+%F=AS%RD=0%Q=)T2(R=N)T3(R=N)T4(R=
+OS:Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T5(R=Y%DF=Y%T=40%W=0%S=Z%A=S+%F=A
+OS:R%O=%RD=0%Q=)T6(R=Y%DF=Y%T=40%W=0%S=A%A=Z%F=R%O=%RD=0%Q=)T7(R=Y%DF=Y%T=4
+OS:0%W=0%S=Z%A=S+%F=AR%O=%RD=0%Q=)U1(R=Y%DF=N%T=40%IPL=164%UN=0%RIPL=G%RID=
+OS:G%RIPCK=G%RUCK=G%RUD=G)IE(R=Y%DFI=N%T=40%CD=S)
+
+Network Distance: 1 hop
+
+OS and Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Tue Aug  4 19:52:03 2026 -- 3 IP addresses (3 hosts up) scanned in 80.34 seconds

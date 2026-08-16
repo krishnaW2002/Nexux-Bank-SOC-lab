@@ -1,0 +1,5 @@
+TxnID,CustomerID,Amount,Date
+nTXN001,CUST001,500000,2026-01-15
+nTXN002,CUST002,1200000,2026-01-16
+
+Customer Transcation Data - Demo File.

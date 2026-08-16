@@ -1,0 +1,116 @@
+Status   
+
+FINISHED
+
+Started   
+
+04/08/2026, 15:07:55
+
+Finished  
+
+04/08/2026, 15:10:47
+
+Location  
+
+Shuffle
+"$exec":{1 item
+"decision":"Approve"
+}
+Show skipped actions
+http
+Authenticate
+
+POST
+"$authenticate":{6 items
+"status":200
+"body":{2 items
+"data":{1 item
+"token":"eyJhbGciOiJFUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJ3YXp1aCIsImF1ZCI6IldhenVoIEFQSSBSRVNUIiwibmJmIjoxNzg ..."
+}
+"error":0
+}
+"url":"https://192.168.10.50:55000/security/user/authenticate"
+"headers":{11 items
+"date":"Tue, 04 Aug 2026 09:37:57 GMT"
+"content-type":"application/json"
+"content-length":"433"
+"server":"Wazuh"
+"strict-transport-security":"max-age=63072000; includeSubdomains"
+"x-frame-options":"deny"
+"x-xss-protection":"0"
+"x-content-type-options":"nosniff"
+"content-security-policy":"none"
+"referrer-policy":"no-referrer, strict-origin-when-cross-origin"
+"cache-control":"no-store"
+}
+"cookies":{0 items
+}
+"success":true
+}
+User Input Trigger
+Analyst Gate
+
+run_userinput
+"$analyst gate":{9 items
+"success":true
+"source":"userinput"
+"reason":"User approved the input"
+"information":"## Disable the compromised account?"
+"click_info":{5 items
+"clicked":true
+"time":1785836446
+"ip":"172.18.0.3:52634"
+"user":"shuffle@nexusbank.internal"
+"note":""
+}
+"subflow":{3 items
+"success":false
+"execution_id":""
+"authorization":""
+}
+"subflow_url":""
+"decline_subflow":{3 items
+"success":false
+"execution_id":""
+"workflow_id":""
+}
+"decline_subflow_url":""
+}
+http
+Active Response
+
+PUT
+"$active_response":{6 items
+"status":200
+"body":{3 items
+"data":{4 items
+"affected_items":[1 item
+0:
+"002"
+]
+"total_affected_items":1
+"total_failed_items":0
+"failed_items":[0 items
+]
+}
+"message":"AR command was sent to all agents"
+"error":0
+}
+"url":"https://192.168.10.50:55000/active-response?agents_list=002"
+"headers":{11 items
+"date":"Tue, 04 Aug 2026 09:40:47 GMT"
+"content-type":"application/json"
+"content-length":"169"
+"server":"Wazuh"
+"strict-transport-security":"max-age=63072000; includeSubdomains"
+"x-frame-options":"deny"
+"x-xss-protection":"0"
+"x-content-type-options":"nosniff"
+"content-security-policy":"none"
+"referrer-policy":"no-referrer, strict-origin-when-cross-origin"
+"cache-control":"no-store"
+}
+"cookies":{0 items
+}
+"success":true
+}

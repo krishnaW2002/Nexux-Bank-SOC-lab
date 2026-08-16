@@ -1,0 +1,4 @@
+EmployeeID,Name,Department,Salary
+n001,Rahul Mehta,Finance,85000
+n002,Arjun Verma,IT,95000
+n003,Priya Sharma,HR,75000

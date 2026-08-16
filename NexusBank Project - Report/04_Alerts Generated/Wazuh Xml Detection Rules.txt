@@ -1,0 +1,130 @@
+<group name="nexusbank,windows,">
+
+  <!-- 100001: Port Scan from KALI01 (requires WFP connection auditing — see note below) -->
+  <rule id="100001" level="6">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">^5156$</field>
+    <field name="win.eventdata.sourceAddress">^192\.168\.10\.40$</field>
+    <description>NexusBank: Port scan / recon from KALI01 (T1046)</description>
+    <mitre><id>T1046</id></mitre>
+  </rule>
+
+  <!-- 100002: AS-REP Roasting (unchanged, confirmed working) -->
+  <rule id="100002" level="10">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">4768</field>
+    <field name="win.eventdata.preAuthType">0</field>
+    <description>NexusBank: AS-REP Roasting — pre-auth disabled account targeted (T1558.004)</description>
+    <mitre><id>T1558.004</id></mitre>
+  </rule>
+
+  <!-- 100003: Brute Force (unchanged, confirmed working) -->
+  <rule id="100003" level="10" frequency="6" timeframe="120">
+    <if_matched_sid>60122</if_matched_sid>
+    <same_field>win.eventdata.ipAddress</same_field>
+    <description>NexusBank: SMB brute force — 6+ failures in 2min from same IP (T1110.001)</description>
+    <mitre><id>T1110.001</id></mitre>
+  </rule>
+
+  <!-- 100004: Brute Force Success (unchanged, confirmed working) -->
+  <rule id="100004" level="12">
+    <if_matched_sid>100003</if_matched_sid>
+    <if_sid>92652</if_sid>
+    <same_field>win.eventdata.ipAddress</same_field>
+    <description>NexusBank: CRITICAL — Brute force succeeded. Account compromised. SOAR trigger (T1110.001)</description>
+    <mitre><id>T1110.001</id></mitre>
+  </rule>
+
+  <!-- 100005: SMB Lateral Movement from KALI01 to CL01 -->
+<rule id="100005" level="10">
+  <if_sid>92652</if_sid>
+  <field name="win.eventdata.ipAddress">^192\.168\.10\.40$</field>
+  <field name="win.system.computer">^NXB-CL01</field>
+  <description>NexusBank: SMB lateral movement — NTLM from KALI01 to CL01 (T1021.002)</description>
+  <mitre>
+    <id>T1021.002</id>
+  </mitre>
+</rule>
+
+  <!-- 100006: Kerberoasting (unchanged — fix is the "Kerberos Service Ticket Operations" GPO subcategory, not this rule) -->
+  <rule id="100006" level="10">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">4769</field>
+    <field name="win.eventdata.ticketEncryptionType">0x17|0x12|0x11</field>
+    <description>NexusBank: Kerberoasting — RC4 or AES TGS request (T1558.003)</description>
+    <mitre><id>T1558.003</id></mitre>
+  </rule>
+
+  <!-- 100007: RemoteRegistry start-type change (secretsdump technique) -->
+<rule id="100007" level="12">
+  <if_group>windows</if_group>
+  <field name="win.system.eventID">^7040$</field>
+  <field name="win.eventdata.param1">^Remote Registry$</field>
+  <description>NexusBank: CRITICAL — Remote Registry service start type changed (secretsdump / SAM extraction likely) (T1003.002)</description>
+  <mitre>
+    <id>T1003.002</id>
+  </mitre>
+</rule>
+
+  <!-- 100008: Successful logon from KALI01 to DC01 (possible PTH / lateral movement) -->
+<rule id="100008" level="12">
+  <if_sid>92652</if_sid>
+  <field name="win.eventdata.ipAddress">^192\.168\.10\.40$</field>
+  <field name="win.system.computer">^NXB-DC01</field>
+  <description>NexusBank: CRITICAL — Possible Pass-the-Hash / lateral movement to DC01 from KALI01 (T1550.002)</description>
+  <mitre>
+    <id>T1550.002</id>
+  </mitre>
+</rule>
+
+  <!-- 100009: Ghost Employee (explicit eventID instead of relying on internal SID mapping) -->
+  <rule id="100009" level="12">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">^4720$</field>
+    <field name="win.eventdata.subjectUserName">arjun.verma|intern.user1</field>
+    <description>NexusBank: CRITICAL — New AD user created by privileged account (Ghost Employee) (T1136.002)</description>
+    <mitre><id>T1136.002</id></mitre>
+  </rule>
+
+  <!-- 100010: DCSync (unchanged — fix is the two dsacls SACL commands, not this rule) -->
+  <rule id="100010" level="15">
+    <if_group>windows</if_group>
+    <field name="win.system.eventID">4662</field>
+    <field name="win.eventdata.properties">1131f6aa-9c07-11d1-f79f-00c04fc2dcd2|1131f6ad-9c07-11d1-f79f-00c04fc2dcd2</field>
+    <description>NexusBank: CRITICAL — DCSync detected (T1003.006)</description>
+    <mitre><id>T1003.006</id></mitre>
+  </rule>
+
+<!-- 100011: Finance share access -->
+<rule id="100011" level="12">
+  <if_group>windows</if_group>
+  <field name="win.system.eventID">^5145$</field>
+  <field name="win.eventdata.shareName">Finance</field>
+  <description>NexusBank: CRITICAL — Finance share accessed (possible data exfiltration) (T1039)</description>
+  <mitre>
+    <id>T1039</id>
+  </mitre>
+</rule>
+
+<!-- 100012: Finance sensitive file downloaded -->
+<rule id="100012" level="13">
+  <if_sid>100011</if_sid>
+  <field name="win.eventdata.relativeTargetName">\.csv|\.xlsx|\.xls|\.pdf|\.docx|\.txt</field>
+  <description>NexusBank: CRITICAL — Finance sensitive file downloaded (CSV/Excel/PDF/TXT)</description>
+  <mitre>
+    <id>T1039</id>
+  </mitre>
+</rule>
+
+ <!-- 100013: Suspicious scheduled task created (persistence) -->
+<rule id="100013" level="12">
+  <if_group>windows</if_group>
+  <field name="win.system.eventID">^4698$</field>
+  <field name="win.eventdata.taskName">WindowsUpdateHelper</field>
+  <description>NexusBank: CRITICAL — Suspicious scheduled task "WindowsUpdateHelper" created for persistence (T1053.005)</description>
+  <mitre>
+    <id>T1053.005</id>
+  </mitre>
+</rule>
+
+</group>
